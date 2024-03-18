@@ -1,11 +1,7 @@
 import React from 'react';
 import { ReactNode } from 'react';
 import Link from 'next/link';
-
-interface NavItemProps {
-	href: string;
-	children: ReactNode;
-}
+import { NavItemProps } from '../utils/types';
 
 const NavItem = ({ href, children }: NavItemProps) => (
 	<li className='flex items-center '>
@@ -16,7 +12,7 @@ const NavItem = ({ href, children }: NavItemProps) => (
 );
 
 const Navbar = () => (
-	<nav className='bg-white shadow-sm h-16 flex items-center justify-evenly px-4 sm:px-6 lg:px-8 fixed w-full top-0 right-0'>
+	<nav className='bg-white shadow-sm h-16 flex items-center justify-evenly px-4 sm:px-6 lg:px-8 fixed w-full top-0 right-0 z-40'>
 		<div className='flex items-center'>
 			<Link href='/'>
 				<img src='/brand-logo.svg' alt='Brand Logo' className='h-10' />
@@ -25,7 +21,7 @@ const Navbar = () => (
 		<div className='hidden sm:block'>
 			<ul className='flex text-s space-x-4'>
 				<NavItem href='/'>Home</NavItem>
-				<NavItem href='/motocycles'>Motos</NavItem>
+				<NavItem href='/motorcycles'>Motos</NavItem>
 				<NavItem href='/accessories'>Accesorios</NavItem>
 			</ul>
 		</div>

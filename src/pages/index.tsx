@@ -1,7 +1,7 @@
+import React from 'react';
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 import Layout from '../app/layout';
-import React from 'react';
 
 const Home = () => {
 	return (
