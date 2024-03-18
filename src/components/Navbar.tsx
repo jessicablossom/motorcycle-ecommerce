@@ -15,7 +15,7 @@ const NavItem = ({ href, children }: NavItemProps) => (
 );
 
 const Navbar = () => (
-	<nav className='bg-white shadow-sm h-16 flex items-center justify-evenly px-4 sm:px-6 lg:px-8 fixed w-full'>
+	<nav className='bg-white shadow-sm h-16 flex items-center justify-evenly px-4 sm:px-6 lg:px-8 fixed w-full top-0 right-0'>
 		<div className='flex items-center'>
 			<Link href='/'>
 				<img src='/brand-logo.svg' alt='Brand Logo' className='h-10' />
@@ -23,9 +23,9 @@ const Navbar = () => (
 		</div>
 		<div className='hidden sm:block'>
 			<ul className='flex text-s space-x-4'>
-				<NavItem href='/'>Home</NavItem>
+				{/* <NavItem href='/'>Home</NavItem> */}
 				<NavItem href='/motorbikes'>Motos</NavItem>
-				<NavItem href='/accesories'>Accesorios</NavItem>
+				<NavItem href='/accessories'>Accesorios</NavItem>
 			</ul>
 		</div>
 		<div className='flex items-center'>

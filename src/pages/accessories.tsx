@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '@/app/layout';
 import ProductCard from '@/components/ProductCard';
 
-const Motorcycles: React.FC = () => {
-	const [motorcycles, setMotorcycles] = useState<any[]>([]);
+const Accessories: React.FC = () => {
+	const [accessories, setAccessories] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get('/api/motorcycles');
-				setMotorcycles(response.data);
+				const response = await axios.get('/api/accessories');
+				setAccessories(response.data);
 			} catch (error) {
-				console.error('Error fetching motorcycles:', error);
+				console.error('Error fetching accessories:', error);
 			} finally {
 				setIsLoading(false);
 			}
@@ -21,7 +21,6 @@ const Motorcycles: React.FC = () => {
 
 		fetchData();
 	}, []);
-
 	return (
 		<>
 			<div className='flex flex-column relative w-full h-16 bg-gradient-to-r from-purple-100 from-1% via-purple-400 to-rose-200 bg-gradient-to-r from-rose-50 to-95% via-purple-400 to-purple-100 top-16'>
@@ -75,8 +74,8 @@ const Motorcycles: React.FC = () => {
 							</button>
 						</div>
 						<div className='flex min-h-screen grid grid-col-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-8 justify-between p-20'>
-							{motorcycles.map((motorcycle: any, index: number) => (
-								<ProductCard key={index} product={motorcycle} />
+							{accessories.map((item: any, index: number) => (
+								<ProductCard key={index} product={item} />
 							))}
 						</div>
 					</>
@@ -86,4 +85,4 @@ const Motorcycles: React.FC = () => {
 	);
 };
 
-export default Motorcycles;
+export default Accessories;
