@@ -31,8 +31,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const actualCurrency = price ? price.currency : 'USD';
 	const itemMotocycle = product.categories[0].name === 'Motos';
 
-	console.log(product.variants, 'variants');
-
 	const formattedAmount = (amount: number, currency: string): string => {
 		if (!currency) {
 			currency = 'USD';

@@ -23,8 +23,8 @@ const Navbar = () => (
 		</div>
 		<div className='hidden sm:block'>
 			<ul className='flex text-s space-x-4'>
-				{/* <NavItem href='/'>Home</NavItem> */}
-				<NavItem href='/motorbikes'>Motos</NavItem>
+				<NavItem href='/'>Home</NavItem>
+				<NavItem href='/motocycles'>Motos</NavItem>
 				<NavItem href='/accessories'>Accesorios</NavItem>
 			</ul>
 		</div>
