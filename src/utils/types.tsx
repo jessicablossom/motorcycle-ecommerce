@@ -26,3 +26,8 @@ export interface NavItemProps {
 export interface ProductCardProps {
 	product: Product;
 }
+
+export interface ProductGridProps {
+	isLoading: boolean;
+	products: Product[];
+}
