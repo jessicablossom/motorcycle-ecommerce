@@ -3,10 +3,7 @@ import Link from 'next/link';
 
 import { ProductCardProps } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
-
-const capitalizeWords = (str: string) => {
-	return str.toLowerCase().replace(/(?:^|\s)\S/g, (char) => char.toUpperCase());
-};
+import { getColor } from '../utils/colors';
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const { name, variants } = product;
@@ -16,36 +13,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const actualCurrency = price ? price.currency : 'USD';
 	const itemMotocycle = product.categories[0].name === 'Motos';
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
-
-	const getColor = (colorCode: string) => {
-		const colors: Record<string, { background: string; border?: string }> = {
-			'mark 2': { background: 'bg-zinc-300', border: 'border-red-600' },
-			'pine green': { background: 'bg-green-700', border: 'border-green-700' },
-			'ventura blue': { background: 'bg-cyan-500', border: 'border-cyan-500' },
-			'downtown drag': { background: 'bg-zinc-700', border: 'border-green-500' },
-			'mister clean': { background: 'bg-zinc-200', border: 'border-zinc-200' },
-			'ventura storm': { background: 'bg-cyan-500', border: 'border-zinc-700' },
-			'british racing green': { background: 'bg-green-700', border: 'border-zinc-300' },
-			'fireball red': { background: 'bg-red-800', border: 'border-red-800' },
-		};
-
-		const color = colors[colorCode.toLowerCase()];
-		if (color) {
-			const backgroundColor = color.background;
-			let borderColor = color.border;
-			if (!borderColor) {
-				const colorShade = backgroundColor.split('-')[1];
-
-				console.log('color shade', colorShade);
-				borderColor = `border-${colorShade}-800`;
-			}
-			return { backgroundColor, borderColor };
-		}
-		return { backgroundColor: 'bg-gray-200', borderColor: 'border-gray-200' };
-	};
-
-	const colorCode = product.variants[0].name;
-	const { backgroundColor, borderColor } = getColor(colorCode);
+	const colorCode = getColor(product.variants[0].name);
 
 	return (
 		<div className='w-full h-full border rounded-lg p-4 mb-4 flex flex-col justify-between items-center hover:border-violet-400'>
@@ -62,13 +30,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 					></div>
 				)}
 				{itemMotocycle && (
-					<div className='border rounded-full flex items-center pr-2 m-1'>
+					<div className='border rounded-full flex items-center pr-4 m-1 w-fit'>
 						<div
-							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${backgroundColor} ${borderColor}`}
+							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}`}
 						/>
-						<h4 className='text-base font-medium mb-1 text-slate-500 capitalize'>
-							{capitalizeWords(variant.name)}
-						</h4>
+						<p className='text-base font-medium mb-1 text-slate-500 uppercase'>{variant.name}</p>
 					</div>
 				)}
 
