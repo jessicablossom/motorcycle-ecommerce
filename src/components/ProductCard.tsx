@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { ProductCardProps } from '../utils/types';
+import { Product, ProductCardProps } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
 import { getColor } from '../utils/colors';
+import { getCategory } from '../utils/products';
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const { name, variants } = product;
@@ -12,12 +13,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const actualAmount = price ? price.amount : 0;
 	const actualCurrency = price ? price.currency : 'USD';
 	const itemMotocycle = product.categories[0].name === 'Motos';
+	const category = getCategory(product);
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
 	const colorCode = getColor(product.variants[0].name);
 
 	return (
 		<div className='w-full h-full border rounded-lg p-4 mb-4 flex flex-col justify-between items-center hover:border-violet-400'>
-			<Link href={`/productId?uuid=${product.uuid}`}>
+			<Link href={`/productId?category=${category}&uuid=${product.uuid}`}>
 				{variants && variants[0] && variants[0].images && variants[0].images[0] && (
 					<div
 						className='w-full h-48'

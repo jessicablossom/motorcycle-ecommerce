@@ -12,9 +12,10 @@ import axios from 'axios';
 
 const ProductDetailPage = () => {
 	const router = useRouter();
-	const { uuid } = router.query;
+	const { category, uuid } = router.query;
 	const [product, setProduct] = useState<Product | null>(null);
 
+	// accesorios - crear componente
 	const [accessories, setAccessories] = useState<any[]>([]);
 	const [showAccessoryGrid, setShowAccessoryGrid] = useState<boolean>(false);
 	const [selectedAccessories, setSelectedAccessories] = useState<string[]>([]);
@@ -26,12 +27,12 @@ const ProductDetailPage = () => {
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
 	const financedPrice = useFormattedPrice(actualAmount / 24, actualCurrency);
 
-	const fetchProductDetails = async (uuid: string) => {
+	const fetchProductDetails = async () => {
 		try {
-			const response = await fetch(`/api/products/productId?uuid=${uuid}`);
+			const response = await fetch(`/api/${category}?uuid=${uuid}`);
 			if (response.ok) {
 				const data = await response.json();
-				setProduct(data);
+				setProduct(data[0]);
 			} else {
 				console.error('Failed to fetch product details');
 			}
@@ -55,11 +56,12 @@ const ProductDetailPage = () => {
 	};
 
 	useEffect(() => {
-		if (uuid) {
-			fetchProductDetails(uuid as string);
+		if (uuid && category) {
+			fetchProductDetails();
 		}
 	}, [uuid]);
 
+	// grilla desplegable accesorios
 	useEffect(() => {
 		const fetchAccessories = async () => {
 			try {
@@ -142,7 +144,6 @@ const ProductDetailPage = () => {
 									>
 										Agregá Accesorios
 									</button>
-
 									{showAccessoryGrid && (
 										<div className='grid grid-cols-5 gap-4 w-full mt-4'>
 											{accessories.map((accessory, index) => (
