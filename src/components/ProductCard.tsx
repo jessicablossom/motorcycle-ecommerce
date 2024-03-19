@@ -18,18 +18,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const colorCode = getColor(product.variants[0].name);
 
 	return (
-		<div className='w-full h-full border rounded-lg p-4 mb-4 flex flex-col justify-between items-center hover:border-violet-400'>
-			<Link href={`/productDetailPage?category=${category}&uuid=${product.uuid}`}>
+		<Link className='h-full' href={`/productDetailPage?category=${category}&uuid=${product.uuid}`}>
+			<div className='w-full h-full border rounded-lg p-4  flex flex-col justify-between items-center hover:border-violet-400'>
 				{variants && variants[0] && variants[0].images && variants[0].images[0] && (
 					<div
 						className='w-full h-48'
 						style={{
 							backgroundImage: `url(${variants[0].images[0].url})`,
-							backgroundSize: 'cover',
+							backgroundSize: 'contain',
 							backgroundPosition: 'center',
 							backgroundRepeat: 'no-repeat',
 						}}
-					></div>
+					/>
 				)}
 				{itemMotocycle && (
 					<div className='border rounded-full flex items-center pr-4 m-1 w-fit'>
@@ -136,8 +136,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 						</div>
 					</>
 				)}
-			</Link>
-		</div>
+			</div>
+		</Link>
 	);
 };
 

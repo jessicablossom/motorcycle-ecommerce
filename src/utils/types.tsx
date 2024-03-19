@@ -31,3 +31,39 @@ export interface ProductGridProps {
 	isLoading: boolean;
 	products: Product[];
 }
+
+export interface Order {
+	uuid: string;
+	accessories?: string[];
+	contact: {
+		firstname: string;
+		lastname: string;
+		email: string;
+		phone: string;
+		finace: boolean;
+		trade: boolean;
+	};
+}
+
+export interface ReservationContextType {
+	reservation: Order[];
+	addToReservation: (order: Order) => void;
+	removeFromReservation: (uuid: string) => void;
+}
+
+export interface Accessory {
+	uuid: string;
+	name: string;
+	variants: {
+		details: {
+			features: { value: string }[];
+		};
+		name: string;
+		images: { url: string }[];
+		prices: { amount: number; currency: string }[];
+	}[];
+}
+
+export interface AddOnsGridProps {
+	onSelectAccessory: (selectedAccessories: Accessory[]) => void;
+}

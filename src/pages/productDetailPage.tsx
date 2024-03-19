@@ -1,11 +1,8 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../app/layout';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
 import { Product } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
 import AddOnsGrid from '../components/AddOnsGrid';
@@ -39,6 +36,10 @@ const ProductDetailPage = () => {
 		setShowAccessoryGrid((prevState) => !prevState);
 	};
 
+	const handleAccessorySelection = (selectedAccessories: string[]) => {
+		console.log('Selected Accessories:', selectedAccessories);
+	};
+
 	useEffect(() => {
 		if (uuid && category) {
 			fetchProductDetails();
@@ -47,12 +48,12 @@ const ProductDetailPage = () => {
 
 	return (
 		<Layout>
-			<div className=' flex absolute top-20 gap-10'>
+			<div className='grid grid-cols-2 gap-10 p-20'>
 				{product ? (
 					<>
 						{product.variants.length > 0 && (
 							<React.Fragment key={product.uuid}>
-								<div style={{ width: '40rem', height: '25rem' }}>
+								<div className='h-full'>
 									{product.variants[0].images.length > 1 ? (
 										<Carousel
 											showArrows={true}
@@ -64,61 +65,72 @@ const ProductDetailPage = () => {
 											swipeable={true}
 										>
 											{product.variants[0].images.map((image, index) => (
-												<div
-													key={index}
-													style={{ position: 'relative', width: '100%', height: '100%' }}
-												>
+												<div className='relative w-4/5' key={index}>
 													<img
 														src={image.url}
 														alt={`Image ${index}`}
-														style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+														className='w-full h-full contain'
 													/>
 												</div>
 											))}
 										</Carousel>
 									) : (
-										<div style={{ position: 'relative', width: '100%', height: '100%' }}>
+										<div className='relative w-full h-full'>
 											<img
 												src={product.variants[0].images[0].url}
 												alt={`Image ${product.name}`}
-												style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+												style={{ width: '100%', height: '100%', objectFit: 'contain' }}
 											/>
 										</div>
 									)}
 								</div>
-								<div className='flex flex-col items-start w-1/3'>
+								<div className='flex flex-col items-start w-full'>
 									<div className='text-4xl font-medium mb-4'>{product.name}</div>
 									<div className='text-2xl font-semibold text-gray-400'>{formattedPrice}</div>
 									<>O</>
 									<div className='text-2xl font-semibold text-gray-400'>
 										{financedPrice} por 24 meses.*
 									</div>
-									<div className='w-full border-1.5 border-b border-gray-300 my-4'></div>
+									<div className='w-full border border-b border-gray-300 my-4'></div>
 									<div className='text-lg font-bold mb-2'>Elegí tu versión</div>
-									<div className='w-full border border-2 rounded-lg p-4 text-gray-600 hover:border-violet-500 mb-2'>
-										<ul>
-											<li className='text-lg font-semibold'>
-												{product.name} - {product.variants[0].name}
-											</li>
-											{product.variants[0].details.features.map((feature, index) => {
-												const value = feature.value.trim();
-												return (
-													<li className='text-gray-400' key={index}>
-														{value}
+									{product.variants.map((variant, index) => {
+										return (
+											<div
+												key={index}
+												className='w-full border border rounded-lg p-4 text-gray-600 hover:border-violet-500 mb-2'
+											>
+												<ul>
+													<li className='text-lg font-semibold'>
+														{product.name} - {variant.name}
 													</li>
-												);
-											})}
-										</ul>
-									</div>
+													{product.variants[0].details.features.map((feature, index) => {
+														const value = feature.value.trim();
+														return (
+															<li className='text-gray-400' key={index}>
+																{value}
+															</li>
+														);
+													})}
+													<div className='flex items-end justify-end'>
+														<button className='bg-violet-500 p-2 pr-4 pl-4 rounded-full text-slate-50'>
+															Seleccionar
+														</button>
+													</div>
+												</ul>
+											</div>
+										);
+									})}
 									{category === 'motorcycles' && (
 										<>
 											<button
-												className='border-2 rounded-lg p-2 border-violet-500 hover:border-violet-500 hover:bg-violet-500 text-violet-500 hover:text-slate-50 text-center text-lg font-semibold w-full cursor-pointer mt-2'
+												className='border rounded-lg p-2 border-violet-500 hover:border-violet-500 hover:bg-violet-500 text-violet-500 hover:text-slate-50 text-center text-lg font-semibold w-full cursor-pointer mt-2'
 												onClick={toggleAccessories}
 											>
 												Agregá Accesorios
 											</button>
-											{showAccessoryGrid && <AddOnsGrid />}
+											{showAccessoryGrid && (
+												<AddOnsGrid onSelectAccessory={handleAccessorySelection} />
+											)}
 										</>
 									)}
 									<button className='rounded-lg p-2 bg-violet-500 hover:bg-violet-500 text-slate-50 text-center text-lg font-semibold w-full cursor-pointer mt-4'>
