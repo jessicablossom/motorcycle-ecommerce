@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Product, ProductCardProps } from '../utils/types';
+import { ProductCardProps } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
 import { getColor } from '../utils/colors';
 import { getCategory } from '../utils/products';
@@ -19,7 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
 	return (
 		<div className='w-full h-full border rounded-lg p-4 mb-4 flex flex-col justify-between items-center hover:border-violet-400'>
-			<Link href={`/productId?category=${category}&uuid=${product.uuid}`}>
+			<Link href={`/productDetailPage?category=${category}&uuid=${product.uuid}`}>
 				{variants && variants[0] && variants[0].images && variants[0].images[0] && (
 					<div
 						className='w-full h-48'
@@ -34,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 				{itemMotocycle && (
 					<div className='border rounded-full flex items-center pr-4 m-1 w-fit'>
 						<div
-							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}`}
+							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}!`}
 						/>
 						<p className='text-base font-medium mb-1 text-slate-500 uppercase'>{variant.name}</p>
 					</div>
