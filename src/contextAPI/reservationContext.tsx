@@ -13,6 +13,7 @@ const useReservation = () => {
 
 const ReservationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [reservation, setReservation] = useState<Order[]>([]);
+	console.log(reservation, 'context');
 	const addToReservation = (order: Order) => {
 		setReservation((prevReservation) => [...prevReservation, order]);
 	};

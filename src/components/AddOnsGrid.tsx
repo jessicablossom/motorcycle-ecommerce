@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Accessory, AddOnsGridProps } from '../utils/types';
-import useFormattedPrice from '../hooks/useFormatterPrice';
+import { SelectedAccessory, AddOnsGridProps } from '../utils/types';
 
-const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelectAccessory }) => {
-	const [accessories, setAccessories] = useState<Accessory[]>([]);
-	const [selectedAccessories, setSelectedAccessories] = useState<Accessory[]>([]);
+const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelect }) => {
+	const [accessories, setAccessories] = useState<SelectedAccessory[]>([]);
+	const [selectedAccessories, setSelectedAccessories] = useState<SelectedAccessory[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const handleAccessorySelection = (accessory: Accessory) => {
+	const handleAccessorySelection = (accessory: SelectedAccessory) => {
 		setSelectedAccessories((prevAccessories) => {
 			const existingIndex = prevAccessories.findIndex((item) => item.uuid === accessory.uuid);
 			if (existingIndex !== -1) {
@@ -22,10 +21,19 @@ const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelectAccessory }) => {
 	};
 
 	useEffect(() => {
+		onSelect(selectedAccessories.map((item) => item.uuid));
+	}, [selectedAccessories]);
+
+	useEffect(() => {
 		const fetchAccessories = async () => {
 			try {
 				const response = await axios.get('/api/accessories');
-				setAccessories(response.data);
+				const transformedAccessories = response.data.map((accessory: any) => ({
+					uuid: accessory.uuid,
+					name: accessory.name,
+					variants: accessory.variants,
+				}));
+				setAccessories(transformedAccessories);
 			} catch (error) {
 				console.error('Error fetching accessories:', error);
 			} finally {
@@ -60,13 +68,13 @@ const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelectAccessory }) => {
 			<div className='col-span-5 grid grid-cols-2 gap-1 w-full text-medium'>
 				{selectedAccessories.map((accessory, index) => {
 					return (
-						<>
-							<div key={index}>{accessory.name}</div>
+						<React.Fragment key={index}>
+							<div>{accessory.name}</div>
 							<div>
 								{accessory.variants[0].prices[0].currency}{' '}
 								{accessory.variants[0].prices[0].amount.toFixed(2)}
 							</div>
-						</>
+						</React.Fragment>
 					);
 				})}
 			</div>

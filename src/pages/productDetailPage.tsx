@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../app/layout';
+import { Product, Variant, Order } from '../utils/types';
+import useFormattedPrice from '../hooks/useFormatterPrice';
+import { useReservation } from '../contextAPI/reservationContext';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Product } from '../utils/types';
-import useFormattedPrice from '../hooks/useFormatterPrice';
 import AddOnsGrid from '../components/AddOnsGrid';
 
 const ProductDetailPage = () => {
 	const router = useRouter();
 	const { category, uuid } = router.query;
 	const [product, setProduct] = useState<Product | null>(null);
+	const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 	const [showAccessoryGrid, setShowAccessoryGrid] = useState<boolean>(false);
-
+	const [selectedAccessoriesIds, setSelectedAccessoriesIds] = useState<string[]>([]);
 	const actualAmount = product ? product?.variants[0].prices[0].amount : 0;
 	const actualCurrency = product ? product?.variants[0].prices[0].currency : 'USD';
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
 	const financedPrice = useFormattedPrice(actualAmount / 24, actualCurrency);
+	const { addToReservation } = useReservation();
 
 	const fetchProductDetails = async () => {
 		try {
@@ -36,8 +39,33 @@ const ProductDetailPage = () => {
 		setShowAccessoryGrid((prevState) => !prevState);
 	};
 
-	const handleAccessorySelection = (selectedAccessories: string[]) => {
-		console.log('Selected Accessories:', selectedAccessories);
+	const handleSelectedVariant = (variantId: string) => {
+		const updatedVariant = product?.variants.find((variant) => variant.uuid === variantId);
+		if (updatedVariant) {
+			const updatedVariantId = updatedVariant.uuid;
+			if (selectedVariantId === updatedVariantId) {
+				setSelectedVariantId(null);
+			} else {
+				setSelectedVariantId(updatedVariantId);
+			}
+		}
+	};
+
+	const handleSubmit = () => {
+		if (selectedVariantId) {
+			const order: Order = {
+				uuid: selectedVariantId,
+				accessories: selectedAccessoriesIds,
+				contact: {
+					firstname: '',
+					lastname: '',
+					email: '',
+					phone: '',
+					finace: false,
+				},
+			};
+			addToReservation(order);
+		}
 	};
 
 	useEffect(() => {
@@ -46,6 +74,7 @@ const ProductDetailPage = () => {
 		}
 	}, [uuid]);
 
+	console.log(selectedVariantId, 'variante');
 	return (
 		<Layout>
 			<div className='grid grid-cols-2 gap-10 p-20'>
@@ -97,7 +126,11 @@ const ProductDetailPage = () => {
 										return (
 											<div
 												key={index}
-												className='w-full border border rounded-lg p-4 text-gray-600 hover:border-violet-500 mb-2'
+												className={`w-full border box-border rounded-lg p-4 text-gray-600 mb-2 ${
+													selectedVariantId === variant.uuid
+														? ' border-violet-500'
+														: 'hover:border-violet-500'
+												}`}
 											>
 												<ul>
 													<li className='text-lg font-semibold'>
@@ -112,8 +145,17 @@ const ProductDetailPage = () => {
 														);
 													})}
 													<div className='flex items-end justify-end'>
-														<button className='bg-violet-500 p-2 pr-4 pl-4 rounded-full text-slate-50'>
-															Seleccionar
+														<button
+															onClick={() => handleSelectedVariant(variant.uuid)}
+															className={`p-2 pr-4 pl-4 rounded-full text-slate-50 w-48 ${
+																selectedVariantId === variant.uuid
+																	? 'border box-border border-violet-500 text-violet-500 font-medium'
+																	: 'border bg-violet-500'
+															}`}
+														>
+															{selectedVariantId === variant.uuid
+																? 'Deseleccionar'
+																: 'Seleccionar'}
 														</button>
 													</div>
 												</ul>
@@ -123,17 +165,56 @@ const ProductDetailPage = () => {
 									{category === 'motorcycles' && (
 										<>
 											<button
-												className='border rounded-lg p-2 border-violet-500 hover:border-violet-500 hover:bg-violet-500 text-violet-500 hover:text-slate-50 text-center text-lg font-semibold w-full cursor-pointer mt-2'
+												className='flex items-center rounded-full p-2 border-violet-500 text-violet-500 text-center text-lg font-semibold w-3/6 cursor-pointer mt-2'
 												onClick={toggleAccessories}
 											>
-												Agregá Accesorios
+												Agregá Accesorios{' '}
+												{showAccessoryGrid === false ? (
+													<div className='text-violet-500 border border-violet-500 rounded-full m-1'>
+														<svg
+															xmlns='http://www.w3.org/2000/svg'
+															fill='none'
+															viewBox='0 0 24 24'
+															stroke-width='2'
+															stroke='currentColor'
+															className='w-4 h-4 m-1'
+														>
+															<path
+																stroke-linecap='round'
+																stroke-linejoin='round'
+																d='m19.5 8.25-7.5 7.5-7.5-7.5'
+															/>
+														</svg>
+													</div>
+												) : (
+													<div className='text-violet-500 border border-violet-500 rounded-full m-1'>
+														<svg
+															xmlns='http://www.w3.org/2000/svg'
+															fill='none'
+															viewBox='0 0 24 24'
+															stroke-width='2'
+															stroke='currentColor'
+															className='w-4 h-4 m-1'
+														>
+															<path
+																stroke-linecap='round'
+																stroke-linejoin='round'
+																d='m4.5 15.75 7.5-7.5 7.5 7.5'
+															/>
+														</svg>
+													</div>
+												)}
 											</button>
-											{showAccessoryGrid && (
-												<AddOnsGrid onSelectAccessory={handleAccessorySelection} />
-											)}
+											{showAccessoryGrid && <AddOnsGrid onSelect={setSelectedAccessoriesIds} />}
 										</>
 									)}
-									<button className='rounded-lg p-2 bg-violet-500 hover:bg-violet-500 text-slate-50 text-center text-lg font-semibold w-full cursor-pointer mt-4'>
+									<button
+										onClick={handleSubmit}
+										disabled={selectedVariantId === null}
+										className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-3/6 cursor-pointer mt-4 ${
+											selectedVariantId !== null ? 'bg-violet-500' : 'bg-gray-300'
+										}`}
+									>
 										Siguiente
 									</button>
 								</div>

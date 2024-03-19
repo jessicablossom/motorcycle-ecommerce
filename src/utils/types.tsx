@@ -5,17 +5,19 @@ export interface Product {
 	uuid: string;
 	categories: { name: string }[];
 	seller: { name: string };
-	accessories: [];
-	variants: {
-		details: {
-			motors: { value: string }[];
-			years: { value: string }[];
-			features: { value: string }[];
-		};
-		name: string;
-		images: { url: string }[];
-		prices: { amount: number; currency: string }[];
-	}[];
+	accessories: any[];
+	variants: Variant[];
+}
+export interface Variant {
+	uuid: string;
+	details: {
+		motors: { value: string }[];
+		years: { value: string }[];
+		features: { value: string }[];
+	};
+	name: string;
+	images: { url: string }[];
+	prices: { amount: number; currency: string }[];
 }
 
 export interface NavItemProps {
@@ -41,7 +43,7 @@ export interface Order {
 		email: string;
 		phone: string;
 		finace: boolean;
-		trade: boolean;
+		trade?: boolean;
 	};
 }
 
@@ -64,6 +66,15 @@ export interface Accessory {
 	}[];
 }
 
+export interface SelectedAccessory {
+	uuid: string;
+	name: string;
+	variants: {
+		images: { url: string }[];
+		prices: { amount: number; currency: string }[];
+	}[];
+}
+
 export interface AddOnsGridProps {
-	onSelectAccessory: (selectedAccessories: Accessory[]) => void;
+	onSelect: (accessoriesIds: string[]) => void;
 }
