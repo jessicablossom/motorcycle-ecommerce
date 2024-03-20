@@ -11,8 +11,8 @@ import AddOnsGrid from '../components/AddOnsGrid';
 const ProductDetailPage = () => {
 	const router = useRouter();
 	const { category, uuid } = router.query;
-	const [product, setProduct] = useState<Product | null>(null);
-	const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+	const [product, setProduct] = useState<Product | undefined>();
+	const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>();
 	const [showAccessoryGrid, setShowAccessoryGrid] = useState<boolean>(false);
 	const [selectedAccessoriesIds, setSelectedAccessoriesIds] = useState<string[]>([]);
 	const actualAmount = product ? product?.variants[0].prices[0].amount : 0;
@@ -44,14 +44,14 @@ const ProductDetailPage = () => {
 		if (updatedVariant) {
 			const updatedVariantId = updatedVariant.uuid;
 			if (selectedVariantId === updatedVariantId) {
-				setSelectedVariantId(null);
+				setSelectedVariantId(undefined);
 			} else {
 				setSelectedVariantId(updatedVariantId);
 			}
 		}
 	};
 
-	const handleSubmit = () => {
+	const handleNextStep = () => {
 		if (selectedVariantId) {
 			const order: Order = {
 				uuid: selectedVariantId,
@@ -65,6 +65,8 @@ const ProductDetailPage = () => {
 				},
 			};
 			addToReservation(order);
+			setSelectedVariantId(undefined);
+			setSelectedAccessoriesIds([]);
 		}
 	};
 
@@ -209,7 +211,7 @@ const ProductDetailPage = () => {
 										</>
 									)}
 									<button
-										onClick={handleSubmit}
+										onClick={handleNextStep}
 										disabled={selectedVariantId === null}
 										className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-3/6 cursor-pointer mt-4 ${
 											selectedVariantId !== null ? 'bg-violet-500' : 'bg-gray-300'

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../../utils/api';
+import handler from '../../utils/proxyApi';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const { uuid } = req.query;

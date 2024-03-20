@@ -1,24 +1,18 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import React from 'react';
 import ProductGrid from '../components/ProductGrid';
+import useApi from '../hooks/useApi';
 
 function Motos() {
 	const [products, setProducts] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const { getMotorcycles } = useApi();
 
 	useEffect(() => {
 		const fetchData = async () => {
-			try {
-				const response = await axios.get('/api/motorcycles');
-				setProducts(response.data);
-			} catch (error) {
-				console.error('Error fetching motorcycles:', error);
-			} finally {
-				setIsLoading(false);
-			}
+			setProducts(await getMotorcycles());
+			setIsLoading(false);
 		};
-
 		fetchData();
 	}, []);
 

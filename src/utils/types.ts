@@ -36,7 +36,7 @@ export interface ProductGridProps {
 
 export interface Order {
 	uuid: string;
-	accessories?: string[];
+	accessories?: string[] | null;
 	contact: {
 		firstname: string;
 		lastname: string;
