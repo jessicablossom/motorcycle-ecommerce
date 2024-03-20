@@ -101,7 +101,7 @@ const ProductDetailPage = () => {
 			{isLoading ? (
 				<Loader />
 			) : (
-				<div className='grid grid-cols-2 gap-10 p-20'>
+				<div className='grid grid-col-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:grid-col-2 gap-10 p-20'>
 					{product && product.variants.length > 0 && (
 						<React.Fragment key={product.uuid}>
 							<div className='h-full'>
@@ -259,11 +259,11 @@ const ProductDetailPage = () => {
 												)}
 											</>
 										)}
-										<div className='flex justify-center mt-8'>
+										<div className='flex justify-end mt-8 w-full'>
 											<button
 												onClick={category === 'motorcycles' ? handleRequestQuote : handleBuy}
 												disabled={!selectedVariantId}
-												className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-60 cursor-pointer mt-4 ${
+												className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-full lg:w-60 cursor-pointer mt-4 ${
 													!!selectedVariantId ? 'bg-violet-500' : 'bg-gray-300'
 												}`}
 											>

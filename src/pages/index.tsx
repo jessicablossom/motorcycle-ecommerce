@@ -16,12 +16,12 @@ const Home = () => {
 				/>
 				<div className='flex flex-col items-center justify-center m-12'>
 					<h4 className='text-3xl font-semibold mb-4 text-center'>Conoce la familia Meteor</h4>
-					<p className='text-md mb-8 w-1/2 text-center'>
+					<p className='text-md mb-8 w-full lg:w-1/2 text-center '>
 						Sapien, duis commodo risus molestie pulvinar sit id id. Malesuada quam leo, quis venenatis
 						integer pellentesque mauris. Sapien, duis commodo risus molestie pulvinar sit id id. Malesuada
 						quam leo, quis venenatis integer pellentesque mauris.
 					</p>
-					<div className='grid grid-cols-4 gap-4'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4'>
 						<Link href='/motorcycles'>
 							<img src='/card-test.svg' className='border p-2 rounded-lg shadow-lg' />
 						</Link>
@@ -37,7 +37,7 @@ const Home = () => {
 					</div>
 				</div>
 				<div className='flex flex-column w-full h-32 bg-gradient-to-r from-purple-100 from-1% via-purple-400 to-rose-200 bg-gradient-to-r from-rose-50 to-95% via-purple-400 to-purple-100 top-16'>
-					<h4 className='flex text-3xl font-bold items-center justify-start w-2/5 text-white ml-40'>
+					<h4 className='flex text-lg lg:text-3xl font-bold items-center justify-start w-full lg:w-2/5 text-white m-10 lg:ml-40'>
 						Entérate del último recorrido de la Meteor 350 por las sierras de Córdoba.
 					</h4>
 				</div>
