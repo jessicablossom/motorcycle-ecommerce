@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../app/layout';
-import { Product, Variant, Order } from '../utils/types';
+import { Product, Order, Accessory } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
+import useApi from '../hooks/useApi';
 import { useReservation } from '../contextAPI/reservationContext';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -10,16 +11,22 @@ import AddOnsGrid from '../components/AddOnsGrid';
 
 const ProductDetailPage = () => {
 	const router = useRouter();
+	const { getAccessories } = useApi();
+	const { addToReservation } = useReservation();
+
 	const { category, uuid } = router.query;
 	const [product, setProduct] = useState<Product | undefined>();
 	const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>();
+
 	const [showAccessoryGrid, setShowAccessoryGrid] = useState<boolean>(false);
+	const [accessories, setAccessories] = useState<Accessory[]>([]);
 	const [selectedAccessoriesIds, setSelectedAccessoriesIds] = useState<string[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+
 	const actualAmount = product ? product?.variants[0].prices[0].amount : 0;
 	const actualCurrency = product ? product?.variants[0].prices[0].currency : 'USD';
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
 	const financedPrice = useFormattedPrice(actualAmount / 24, actualCurrency);
-	const { addToReservation } = useReservation();
 
 	const fetchProductDetails = async () => {
 		try {
@@ -76,7 +83,14 @@ const ProductDetailPage = () => {
 		}
 	}, [uuid]);
 
-	console.log(selectedVariantId, 'variante');
+	useEffect(() => {
+		const fetchData = async () => {
+			setAccessories(await getAccessories());
+			setIsLoading(false);
+		};
+		fetchData();
+	}, []);
+
 	return (
 		<Layout>
 			<div className='grid grid-cols-2 gap-10 p-20'>
@@ -207,14 +221,20 @@ const ProductDetailPage = () => {
 													</div>
 												)}
 											</button>
-											{showAccessoryGrid && <AddOnsGrid onSelect={setSelectedAccessoriesIds} />}
+											{showAccessoryGrid && (
+												<AddOnsGrid
+													accessories={accessories}
+													selectedIds={selectedAccessoriesIds}
+													onSelect={setSelectedAccessoriesIds}
+												/>
+											)}
 										</>
 									)}
 									<button
 										onClick={handleNextStep}
-										disabled={selectedVariantId === null}
+										disabled={!selectedVariantId}
 										className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-3/6 cursor-pointer mt-4 ${
-											selectedVariantId !== null ? 'bg-violet-500' : 'bg-gray-300'
+											!!selectedVariantId ? 'bg-violet-500' : 'bg-gray-300'
 										}`}
 									>
 										Siguiente

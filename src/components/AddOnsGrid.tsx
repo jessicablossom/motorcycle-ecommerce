@@ -1,58 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { SelectedAccessory, AddOnsGridProps } from '../utils/types';
+import React from 'react';
+import { AddOnsGridProps } from '../utils/types';
 
-const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelect }) => {
-	const [accessories, setAccessories] = useState<SelectedAccessory[]>([]);
-	const [selectedAccessories, setSelectedAccessories] = useState<SelectedAccessory[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+const AddOnsGrid: React.FC<AddOnsGridProps> = ({ accessories, selectedIds, onSelect }) => {
+	const selectedAccessories = accessories.filter((accessory) => selectedIds.find((uuid) => accessory.uuid === uuid));
 
-	const handleAccessorySelection = (accessory: SelectedAccessory) => {
-		setSelectedAccessories((prevAccessories) => {
-			const existingIndex = prevAccessories.findIndex((item) => item.uuid === accessory.uuid);
-			if (existingIndex !== -1) {
-				const updatedAccessories = [...prevAccessories];
-				updatedAccessories.splice(existingIndex, 1);
-				return updatedAccessories;
-			} else {
-				return [...prevAccessories, accessory];
-			}
-		});
+	const handleAccessorySelection = (uuid: string) => {
+		const existingIndex = selectedIds.findIndex((item) => item === uuid);
+		if (existingIndex !== -1) {
+			const updatedAccessories = [...selectedIds];
+			updatedAccessories.splice(existingIndex, 1);
+			onSelect(updatedAccessories);
+		} else {
+			onSelect([...selectedIds, uuid]);
+		}
 	};
-
-	useEffect(() => {
-		onSelect(selectedAccessories.map((item) => item.uuid));
-	}, [selectedAccessories]);
-
-	useEffect(() => {
-		const fetchAccessories = async () => {
-			try {
-				const response = await axios.get('/api/accessories');
-				const transformedAccessories = response.data.map((accessory: any) => ({
-					uuid: accessory.uuid,
-					name: accessory.name,
-					variants: accessory.variants,
-				}));
-				setAccessories(transformedAccessories);
-			} catch (error) {
-				console.error('Error fetching accessories:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchAccessories();
-	}, []);
 
 	return (
 		<div className='grid grid-cols-5 gap-4 w-full mt-4'>
 			{accessories.map((accessory, index) => (
 				<div
 					key={index}
-					onClick={() => handleAccessorySelection(accessory)}
+					onClick={() => handleAccessorySelection(accessory.uuid)}
 					className={`border p-2 rounded-lg flex flex-col w-full h-32 items-center justify-between text-center cursor-pointer
 				 ${
-						selectedAccessories.some((selected) => selected.uuid === accessory.uuid)
+						selectedIds.some((uuid) => uuid === accessory.uuid)
 							? 'bg-violet-500 text-slate-50 font-semibold'
 							: 'border-2 hover:border-violet-500'
 					}`}
@@ -78,8 +49,6 @@ const AddOnsGrid: React.FC<AddOnsGridProps> = ({ onSelect }) => {
 					);
 				})}
 			</div>
-
-			{isLoading && <div> is Loading</div>}
 		</div>
 	);
 };

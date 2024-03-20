@@ -66,15 +66,8 @@ export interface Accessory {
 	}[];
 }
 
-export interface SelectedAccessory {
-	uuid: string;
-	name: string;
-	variants: {
-		images: { url: string }[];
-		prices: { amount: number; currency: string }[];
-	}[];
-}
-
 export interface AddOnsGridProps {
+	accessories: Accessory[];
+	selectedIds: string[];
 	onSelect: (accessoriesIds: string[]) => void;
 }
