@@ -1,10 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductGridProps } from '../utils/types';
 import Layout from '../app/layout';
 import ProductCard from './ProductCard';
 import Loader from './common/Loader';
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
+	const [sortedProducts, setSortedProducts] = useState(products);
+	const [sortMethod, setSortMethod] = useState('');
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const sortByName = () => {
+		const sorted = [...products].sort((a, b) => a.name.localeCompare(b.name));
+		setSortedProducts(sorted);
+		setSortMethod('name');
+	};
+
+	const sortByPriceAscending = () => {
+		const sorted = [...products].sort((a, b) => a.variants[0].prices[0].amount - b.variants[0].prices[0].amount);
+		setSortedProducts(sorted);
+		setSortMethod('priceAscending');
+	};
+
+	const sortByPriceDescending = () => {
+		const sorted = [...products].sort((a, b) => b.variants[0].prices[0].amount - a.variants[0].prices[0].amount);
+		setSortedProducts(sorted);
+		setSortMethod('priceDescending');
+	};
+
+	useEffect(() => {
+		sortByName();
+	}, [products]);
+
+	const handleSortChange = (method: string) => {
+		switch (method) {
+			case 'name':
+				sortByName();
+				break;
+			case 'priceAscending':
+				sortByPriceAscending();
+				break;
+			case 'priceDescending':
+				sortByPriceDescending();
+				break;
+			default:
+				break;
+		}
+		setIsMenuOpen(false);
+	};
+
+	const toggleMenu = () => {
+		setIsMenuOpen(!isMenuOpen);
+	};
+
 	return (
 		<>
 			<div className='flex flex-column relative w-full h-16 bg-gradient-to-r from-purple-100 from-1% via-purple-400 to-rose-200 bg-gradient-to-r from-rose-50 to-95% via-purple-400 to-purple-100 top-16'>
@@ -19,47 +66,70 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
 				) : (
 					<>
 						<div className='flex flex-row relative gap-4 w-full h-fit top-10 m-2 pl-20 '>
-							<button className='flex flex-row w-fit h-fit rounded-lg border p-3 gap-3 hover:text-violet-500 hover:border-violet-400 hover:bg-violet-100'>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z'
-									/>
-								</svg>
-								Categorias
-							</button>
-							<button className='flex flex-row w-fit h-fit rounded-lg border p-3 gap-3 hover:text-violet-500 hover:border-violet-400 hover:bg-violet-100'>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-									/>
-								</svg>
-								Precio
-							</button>
-							<button className='flex flex-row w-fit h-fit rounded-lg border p-3 gap-3 hover:text-violet-500 hover:border-violet-400 hover:bg-violet-100 self-end'>
-								Orden:
-							</button>
+							<div className='relative flex'>
+								<div className='items-end justify-end'>
+									<button
+										type='button'
+										onClick={toggleMenu}
+										className='inline-flex justify-center items-end w-fit rounded-md border p-3 text-sm font-medium text-violet-700 bg-white hover:bg-gray-50 focus:outline-none focus:border-violet-500 focus:ring-violet-500 focus:ring-offset-violet-200 focus:ring-1'
+										id='options-menu'
+										aria-haspopup='true'
+										aria-expanded={isMenuOpen ? 'true' : 'false'}
+									>
+										Ordenar por
+										<svg
+											className='-mr-1 ml-2 h-5 w-5'
+											xmlns='http://www.w3.org/2000/svg'
+											viewBox='0 0 20 20'
+											fill='currentColor'
+											aria-hidden='true'
+										>
+											<path
+												fillRule='evenodd'
+												d='M10 12a1 1 0 01-.707-.293l-4-4a1 1 0 011.414-1.414L10 9.586l3.293-3.293a1 1 0 111.414 1.414l-4 4A1 1 0 0110 12z'
+												clipRule='evenodd'
+											/>
+										</svg>
+									</button>
+								</div>
+								{isMenuOpen && (
+									<div
+										className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+										role='menu'
+										aria-orientation='vertical'
+										aria-labelledby='options-menu'
+									>
+										<div className='py-1' role='none'>
+											<button
+												onClick={() => handleSortChange('name')}
+												className='block px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-violet-500 w-full text-left'
+												role='menuitem'
+											>
+												Nombre
+											</button>
+											<button
+												onClick={() => handleSortChange('priceAscending')}
+												className='block px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-violet-500 w-full text-left'
+												role='menuitem'
+											>
+												Precio (Menor a Mayor)
+											</button>
+											<button
+												onClick={() => handleSortChange('priceDescending')}
+												className='block px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-violet-500 w-full text-left'
+												role='menuitem'
+											>
+												Precio (Mayor a Menor)
+											</button>
+										</div>
+									</div>
+								)}
+							</div>
 						</div>
 						<div className='flex min-h-screen grid grid-col-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-8 justify-between p-20'>
-							{products &&
-								products.map((item: any, index: number) => <ProductCard key={index} product={item} />)}
+							{sortedProducts.map((item: any, index: number) => (
+								<ProductCard key={index} product={item} />
+							))}
 						</div>
 					</>
 				)}
