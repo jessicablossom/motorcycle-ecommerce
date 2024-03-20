@@ -23,7 +23,17 @@ const useApi = () => {
 			console.error('Error fetching motorcycles:', error);
 		}
 	};
-	return { getAccessories, getMotorcycles };
+
+	const createLead = async (lead: any) => {
+		try {
+			const response = await axios.post('/api/orders', lead);
+			return response.data;
+		} catch (error) {
+			console.error('Error posting lead:', error);
+		}
+	};
+
+	return { getAccessories, getMotorcycles, createLead };
 };
 
 export default useApi;

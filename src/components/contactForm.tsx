@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useReservation } from '../contextAPI/reservationContext';
-import { Order } from '../utils/types';
+import useApi from '../hooks/useApi';
+import { useRouter } from 'next/router';
 
 const ContactForm = () => {
 	const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const ContactForm = () => {
 	});
 	const [emailError, setEmailError] = useState('');
 	const { addToReservation, reservation } = useReservation();
+	const { createLead } = useApi();
+	const router = useRouter();
 
 	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value, type, checked } = event.target;
@@ -31,7 +34,14 @@ const ContactForm = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (formData.contact.email && !emailError) {
-			addToReservation(formData);
+			let payload = { ...reservation, ...formData };
+
+			const sendData = async () => {
+				await createLead(payload);
+				addToReservation(formData);
+				router.push('/orderCreated');
+			};
+			sendData();
 		}
 	};
 
