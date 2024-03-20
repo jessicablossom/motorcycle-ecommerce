@@ -48,9 +48,8 @@ export interface Order {
 }
 
 export interface ReservationContextType {
-	reservation: Order[];
-	addToReservation: (order: Order) => void;
-	removeFromReservation: (uuid: string) => void;
+	reservation?: Order;
+	addToReservation: (order: any) => void;
 }
 
 export interface Accessory {

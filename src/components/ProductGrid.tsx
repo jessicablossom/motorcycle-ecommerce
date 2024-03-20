@@ -57,9 +57,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
 							</button>
 						</div>
 						<div className='flex min-h-screen grid grid-col-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-8 justify-between p-20'>
-							{products.map((item: any, index: number) => (
-								<ProductCard key={index} product={item} />
-							))}
+							{products &&
+								products.map((item: any, index: number) => <ProductCard key={index} product={item} />)}
 						</div>
 					</>
 				)}

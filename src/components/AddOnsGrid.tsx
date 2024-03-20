@@ -2,8 +2,6 @@ import React from 'react';
 import { AddOnsGridProps } from '../utils/types';
 
 const AddOnsGrid: React.FC<AddOnsGridProps> = ({ accessories, selectedIds, onSelect }) => {
-	const selectedAccessories = accessories.filter((accessory) => selectedIds.find((uuid) => accessory.uuid === uuid));
-
 	const handleAccessorySelection = (uuid: string) => {
 		const existingIndex = selectedIds.findIndex((item) => item === uuid);
 		if (existingIndex !== -1) {
@@ -36,19 +34,6 @@ const AddOnsGrid: React.FC<AddOnsGridProps> = ({ accessories, selectedIds, onSel
 					/>
 				</div>
 			))}
-			<div className='col-span-5 grid grid-cols-2 gap-1 w-full text-medium'>
-				{selectedAccessories.map((accessory, index) => {
-					return (
-						<React.Fragment key={index}>
-							<div>{accessory.name}</div>
-							<div>
-								{accessory.variants[0].prices[0].currency}{' '}
-								{accessory.variants[0].prices[0].amount.toFixed(2)}
-							</div>
-						</React.Fragment>
-					);
-				})}
-			</div>
 		</div>
 	);
 };

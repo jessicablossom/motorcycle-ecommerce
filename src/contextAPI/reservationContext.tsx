@@ -12,19 +12,14 @@ const useReservation = () => {
 };
 
 const ReservationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-	const [reservation, setReservation] = useState<Order[]>([]);
-	console.log(reservation, 'context');
-	const addToReservation = (order: Order) => {
-		setReservation((prevReservation) => [...prevReservation, order]);
-	};
-	const removeFromReservation = (uuid: string) => {
-		setReservation((prevReservation) => prevReservation.filter((item) => item.uuid !== uuid));
+	const [reservation, setReservation] = useState<Order>();
+	const addToReservation = (order) => {
+		let merged = { ...reservation, ...order };
+		setReservation(merged);
 	};
 
 	return (
-		<ReservationContext.Provider value={{ reservation, addToReservation, removeFromReservation }}>
-			{children}
-		</ReservationContext.Provider>
+		<ReservationContext.Provider value={{ reservation, addToReservation }}>{children}</ReservationContext.Provider>
 	);
 };
 export { useReservation, ReservationProvider };
