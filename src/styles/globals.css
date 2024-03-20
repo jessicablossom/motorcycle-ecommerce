@@ -21,6 +21,12 @@ body {
 	background: var(--background-white);
 }
 
+input[type='checkbox'] {
+	box-sizing: border-box;
+	padding: 0;
+	accent-color: var(--primary-violet);
+}
+
 @layer utilities {
 	.text-balance {
 		text-wrap: balance;

@@ -195,7 +195,7 @@ const ProductDetailPage = () => {
 										{category === 'motorcycles' && (
 											<>
 												<button
-													className='flex items-center rounded-full p-2 border-violet-500 text-violet-500 text-center text-lg font-semibold w-3/6 cursor-pointer mt-2'
+													className='flex items-center rounded-full p-2 border-violet-500 text-violet-500 text-center text-lg font-semibold w-1/2 cursor-pointer mt-2'
 													onClick={toggleAccessories}
 												>
 													Agregá Accesorios

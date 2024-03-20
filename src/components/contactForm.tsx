@@ -105,9 +105,9 @@ const ContactForm = () => {
 						required
 					/>
 				</div>
-				<div className='mb-4'>
+				<div className='mb-4 flex items-center '>
 					<input
-						className='leading-tight m-2 w-4 h-4'
+						className='leading-tight m-2 w-5 h-5 after:bg-violet-500 '
 						name='finace'
 						type='checkbox'
 						checked={formData.contact.finace}
@@ -117,9 +117,9 @@ const ContactForm = () => {
 						Financiamiento
 					</label>
 				</div>
-				<div className='mb-4'>
+				<div className='mb-4 flex items-center'>
 					<input
-						className='leading-tight m-2 w-4 h-4'
+						className='leading-tight m-2 w-5 h-5 bg-violet-500'
 						name='trade'
 						type='checkbox'
 						checked={formData.contact.trade}
