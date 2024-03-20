@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import React from 'react';
 import ProductGrid from '../components/ProductGrid';
 import useApi from '../hooks/useApi';

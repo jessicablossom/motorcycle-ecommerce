@@ -45,8 +45,8 @@ const ContactForm = () => {
 
 	return (
 		<div className='  w-full'>
-			<h4 className='text-2xl font-semibold mb-4'>Contacto:</h4>
-			<form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4 border rounded-lg p-6 shadow-md'>
+			<h4 className='text-2xl font-semibold mt-4 mb-4 text-violet-500'>Contacto:</h4>
+			<form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4 border rounded-lg p-8 shadow-md'>
 				<div className='mb-4'>
 					<label className='block font-bold leading-tight mb-2 text-gray-700 text-sm' htmlFor='firstname'>
 						Nombre

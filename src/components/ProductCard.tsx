@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-
 import { ProductCardProps } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
 import { getColor } from '../utils/colors';
@@ -22,12 +21,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 			<div className='w-full h-full border shadow-md rounded-lg p-4  flex flex-col justify-between items-center hover:border-violet-400'>
 				{variants && variants[0] && variants[0].images && variants[0].images[0] && (
 					<div
-						className='w-full h-48'
+						className='w-full h-48 bg-contain bg-center bg-no-repeat'
 						style={{
 							backgroundImage: `url(${variants[0].images[0].url})`,
-							backgroundSize: 'contain',
-							backgroundPosition: 'center',
-							backgroundRepeat: 'no-repeat',
 						}}
 					/>
 				)}
@@ -36,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 						<div
 							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}!`}
 						/>
-						<p className='text-base font-medium mb-1 text-slate-500 uppercase'>{variant.name}</p>
+						<p className='text-base font-medium mb-1 text-gray-500 uppercase'>{variant.name}</p>
 					</div>
 				)}
 

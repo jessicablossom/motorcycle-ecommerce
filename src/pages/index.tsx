@@ -8,12 +8,9 @@ const Home = () => {
 		<Layout>
 			<section id='#home' className='flex flex-col items-center justify-center'>
 				<div
-					className='w-full rounded-lg h-96 mt-12'
+					className='w-full rounded-lg h-96 mt-12 bg-contain bg-center bg-no-repeat'
 					style={{
 						backgroundImage: 'url(/hero.jpeg)',
-						backgroundSize: 'contain',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat',
 					}}
 				/>
 				<div className='flex flex-col items-center justify-center'>
@@ -26,12 +23,9 @@ const Home = () => {
 				</div>
 			</section>
 			<div
-				className='w-full rounded-lg h-40'
+				className='w-full rounded-lg h-40 bg-contain bg-center bg-no-repeat'
 				style={{
 					backgroundImage: 'url(/newsletter.svg)',
-					backgroundSize: 'contain',
-					backgroundPosition: 'center',
-					backgroundRepeat: 'no-repeat',
 				}}
 			/>
 			<section id='#motorcycles'>
