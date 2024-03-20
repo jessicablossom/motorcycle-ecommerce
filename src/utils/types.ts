@@ -48,6 +48,8 @@ export interface Order {
 }
 
 export interface ReservationContextType {
+	product?: Product;
+	setProduct: React.Dispatch<React.SetStateAction<Product | undefined>>;
 	reservation?: Order;
 	addToReservation: (order: any) => void;
 }

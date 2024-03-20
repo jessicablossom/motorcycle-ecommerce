@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 				{itemMotocycle && (
 					<div className='border rounded-full flex items-center pr-4 m-1 w-fit'>
 						<div
-							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}!`}
+							className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 border-4 ${colorCode}`}
 						/>
 						<p className='text-base font-medium mb-1 text-gray-500 uppercase'>{variant.name}</p>
 					</div>

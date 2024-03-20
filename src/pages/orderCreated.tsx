@@ -1,44 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../app/layout';
 import { useReservation } from '../contextAPI/reservationContext';
+import useApi from '../hooks/useApi';
+import { Accessory } from '../utils/types';
 
 const OrderCreated = () => {
-	const { reservation } = useReservation();
-
+	const { reservation, product } = useReservation();
+	const { getAccessories } = useApi();
+	const variant = product && product.variants.find((variant) => reservation?.uuid === variant.uuid);
+	const contact = reservation?.contact;
+	const accessoriesIds = reservation?.accessories || [];
+	const [accessories, setAccessories] = useState<Accessory[]>([]);
+	const selectedAccessories =
+		(accessories && accessories.filter((accessory) => accessoriesIds.find((uuid) => accessory.uuid === uuid))) ||
+		[];
+	useEffect(() => {
+		const fetchData = async () => {
+			setAccessories(await getAccessories());
+		};
+		fetchData();
+	}, []);
 	return (
 		<Layout>
+			{' '}
 			<div className='flex items-center gap-10 p-20 '>
-				<div className='border rounded-lg p-10 w-1/2 h-fit m-auto shadow-lg'>
+				<div className='border rounded-lg p-10 w-3/6 h-fit m-auto shadow-lg'>
 					<h4 className='text-2xl font-bold text-violet-600 mb-2'>¡Hemos recibido su solicitud!</h4>
 					<h4 className='text-lg font-normal text-gray-400'>
-						Un distribuidor hará un seguimiento de los próximos pasos relacionados con su orden.
+						{' '}
+						Un distribuidor hará un seguimiento de los próximos pasos relacionados con su reserva.
 					</h4>
-					{reservation?.contact && (
+					<div className='border border-b mt-4' />{' '}
+					{product && variant && (
 						<>
-							<div className='border border-b mt-4' />
+							<h4 className='text-xl font-bold text-gray-600 mb-2'>{product.name}</h4>{' '}
+							<div className=''>{variant.name}</div>
+							<div className=''>{variant.details.features[0].value}</div>{' '}
+						</>
+					)}
+					{selectedAccessories.length > 0 && (
+						<>
+							<div className='border border-b mt-4' />{' '}
+							<h4 className='text-xl font-bold text-gray-600 mb-2'>Accessorios</h4>
+							{selectedAccessories.map((accessory, index) => (
+								<div className=''>{accessory.name}</div>
+							))}{' '}
+						</>
+					)}
+					{contact && (
+						<>
+							<div className='border border-b mt-4' />{' '}
 							<h4 className='text-xl font-bold text-gray-600 mb-2'>Detalles</h4>
-
 							<div className='contact-info'>
+								{' '}
 								<div className='contact-item'>
-									<span className='font-semibold'>Nombre:</span> {reservation?.contact.firstname}
+									<span className='font-semibold'>Nombre:</span> {contact.firstname}{' '}
 								</div>
 								<div className='contact-item'>
-									<span className='font-semibold'>Apellido:</span> {reservation?.contact.lastname}
-								</div>
+									{' '}
+									<span className='font-semibold'>Apellido:</span> {contact.lastname}
+								</div>{' '}
 								<div className='contact-item'>
-									<span className='font-semibold'>Correo electrónico:</span>{' '}
-									{reservation?.contact.email}
-								</div>
+									<span className='font-semibold'>Correo electrónico:</span> {contact.email}
+								</div>{' '}
 								<div className='contact-item'>
-									<span className='font-semibold'>Teléfono:</span> {reservation?.contact.phone}
+									<span className='font-semibold'>Teléfono:</span> {contact.phone}{' '}
 								</div>
-							</div>
+							</div>{' '}
 						</>
 					)}
 				</div>
-			</div>
+			</div>{' '}
 		</Layout>
 	);
 };
-
 export default OrderCreated;

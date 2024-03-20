@@ -15,10 +15,9 @@ import Loader from '../components/common/Loader';
 const ProductDetailPage = () => {
 	const router = useRouter();
 	const { getAccessories } = useApi();
-	const { addToReservation } = useReservation();
+	const { addToReservation, product, setProduct } = useReservation();
 
 	const { category, uuid } = router.query;
-	const [product, setProduct] = useState<Product | undefined>();
 
 	const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>();
 	const selectedVariant = product && product.variants.find((variant) => selectedVariantId === variant.uuid);
@@ -68,25 +67,21 @@ const ProductDetailPage = () => {
 
 	const handleRequestQuote = () => {
 		if (selectedVariantId) {
-			const order: Order = {
+			const order = {
 				uuid: selectedVariantId,
 				accessories: selectedAccessoriesIds,
-				contact: {
-					firstname: '',
-					lastname: '',
-					email: '',
-					phone: '',
-					finace: false,
-				},
 			};
 			addToReservation(order);
-			setSelectedVariantId(undefined);
-			setSelectedAccessoriesIds([]);
 			setDisplayForm(true);
 		}
 	};
 
 	const handleBuy = () => {
+		const order = {
+			accessories: [],
+			contact: undefined,
+		};
+		addToReservation(order);
 		router.push('/orderCreated');
 	};
 

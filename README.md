@@ -40,6 +40,9 @@ Se creó una carpeta de utils donde ubicar funciones que podemos reutilizar en t
 
 Si bien la app esta estilada con Tailwind (por utilizacion de la sugerencia de la consigna), considero que el codigo queda sobrecargado y en mi preferencia personal utilizaria material UI con styled-components, que permiten quitar la acumulacion de estilos en el render y poder manejarlos fuera del componente.
 
+Al completar la "compra" del accesorio, se esta enviando una orden vacia para limpiar el contexto esto es a mero efecto del ejercicio.
+
 ### Pendientes
 
+Corregir Responsive en mobile
 Creación de tests para los componentes UI y las apis con Jest
