@@ -19,7 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
 	return (
 		<Link className='h-full' href={`/productDetailPage?category=${category}&uuid=${product.uuid}`}>
-			<div className='w-full h-full border rounded-lg p-4  flex flex-col justify-between items-center hover:border-violet-400'>
+			<div className='w-full h-full border shadow-md rounded-lg p-4  flex flex-col justify-between items-center hover:border-violet-400'>
 				{variants && variants[0] && variants[0].images && variants[0].images[0] && (
 					<div
 						className='w-full h-48'

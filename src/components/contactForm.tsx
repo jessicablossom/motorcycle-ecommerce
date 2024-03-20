@@ -14,7 +14,7 @@ const ContactForm = () => {
 			trade: false,
 		},
 	});
-	const [emailError, setEmailError] = useState('');
+
 	const { addToReservation, reservation } = useReservation();
 	const { createLead } = useApi();
 	const router = useRouter();
@@ -33,22 +33,20 @@ const ContactForm = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (formData.contact.email && !emailError) {
-			let payload = { ...reservation, ...formData };
 
-			const sendData = async () => {
-				await createLead(payload);
-				addToReservation(formData);
-				router.push('/orderCreated');
-			};
-			sendData();
-		}
+		let payload = { ...reservation, ...formData };
+		const sendData = async () => {
+			await createLead(payload);
+			addToReservation(formData);
+			router.push('/orderCreated');
+		};
+		sendData();
 	};
 
 	return (
 		<div className='  w-full'>
 			<h4 className='text-2xl font-semibold mb-4'>Contacto:</h4>
-			<form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4 border rounded-lg p-6'>
+			<form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4 border rounded-lg p-6 shadow-md'>
 				<div className='mb-4'>
 					<label className='block font-bold leading-tight mb-2 text-gray-700 text-sm' htmlFor='firstname'>
 						Nombre
@@ -56,6 +54,7 @@ const ContactForm = () => {
 					<input
 						className='border focus:outline-none focus:border-violet-500 hover:border-violet-500 leading-tight px-3 py-2 rounded-full text-gray-700 w-full'
 						name='firstname'
+						title='Por favor ingrese su nombre'
 						placeholder='Ingrese su nombre'
 						type='text'
 						value={formData.contact.firstname}
@@ -91,7 +90,6 @@ const ContactForm = () => {
 						onChange={handleInputChange}
 						value={formData.contact.email}
 					/>
-					{emailError && <span className='text-red-500 text-sm'>{emailError}</span>}
 				</div>
 				<div className='mb-4'>
 					<label className='block font-bold leading-tight mb-2 text-gray-700 text-sm' htmlFor='phone'>

@@ -1,7 +1,6 @@
 import React from 'react';
-import { ReactNode } from 'react';
 import Link from 'next/link';
-import { NavItemProps } from '../utils/types';
+import { NavItemProps } from '../../utils/types';
 
 const NavItem = ({ href, children }: NavItemProps) => (
 	<li className='flex items-center '>

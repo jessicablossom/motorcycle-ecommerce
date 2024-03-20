@@ -9,6 +9,8 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import AddOnsGrid from '../components/AddOnsGrid';
 import ContactForm from '../components/contactForm';
+import Loader from '../components/common/Loader';
+import OrderDetails from '../components/OrderDetails';
 
 const ProductDetailPage = () => {
 	const router = useRouter();
@@ -27,7 +29,9 @@ const ProductDetailPage = () => {
 	const selectedAccessories =
 		accessories &&
 		accessories.filter((accessory) => selectedAccessoriesIds.find((uuid) => accessory.uuid === uuid));
-
+	const selectedAccessoriesSubtotal = selectedAccessories.reduce((total, accessory) => {
+		return total + accessory.variants[0].prices[0].amount;
+	}, 0);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [displayForm, setDisplayForm] = useState<boolean>(false);
 
@@ -35,10 +39,6 @@ const ProductDetailPage = () => {
 	const actualCurrency = product ? product?.variants[0].prices[0].currency : 'USD';
 	const formattedPrice = useFormattedPrice(actualAmount, actualCurrency);
 	const financedPrice = useFormattedPrice(actualAmount / 24, actualCurrency);
-
-	const calculateReservationPrice = (amount: number) => {
-		return (amount * 0.01).toFixed(2);
-	};
 
 	const fetchProductDetails = async () => {
 		try {
@@ -104,7 +104,7 @@ const ProductDetailPage = () => {
 	return (
 		<Layout>
 			<div className='grid grid-cols-2 gap-10 p-20'>
-				{product ? (
+				{product && (
 					<>
 						{product.variants.length > 0 && (
 							<React.Fragment key={product.uuid}>
@@ -150,12 +150,14 @@ const ProductDetailPage = () => {
 
 									{!displayForm && (
 										<>
-											<div className='text-lg font-bold mb-2'>Elegí tu versión</div>
+											{category === 'Motorcycle' && (
+												<div className='text-lg font-bold mb-2'>Elegí tu versión</div>
+											)}
 											{product.variants.map((variant, index) => {
 												return (
 													<div
 														key={index}
-														className={`w-full border box-border rounded-lg p-4 text-gray-600 mb-2 ${
+														className={`w-full border box-border rounded-lg shadow-md p-4 text-gray-600 mb-2 ${
 															selectedVariantId === variant.uuid
 																? ' border-violet-500'
 																: 'hover:border-violet-500'
@@ -205,20 +207,20 @@ const ProductDetailPage = () => {
 																xmlns='http://www.w3.org/2000/svg'
 																fill='none'
 																viewBox='0 0 24 24'
-																stroke-width='2'
+																strokeWidth='2'
 																stroke='currentColor'
 																className='w-4 h-4 m-1'
 															>
 																{showAccessoryGrid ? (
 																	<path
-																		stroke-linecap='round'
-																		stroke-linejoin='round'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
 																		d='m4.5 15.75 7.5-7.5 7.5 7.5'
 																	/>
 																) : (
 																	<path
-																		stroke-linecap='round'
-																		stroke-linejoin='round'
+																		strokeLinecap='round'
+																		strokeLinejoin='round'
 																		d='m19.5 8.25-7.5 7.5-7.5-7.5'
 																	/>
 																)}
@@ -232,23 +234,36 @@ const ProductDetailPage = () => {
 															onSelect={setSelectedAccessoriesIds}
 														/>
 													)}
-													{selectedAccessories && (
-														<div className='grid grid-cols-2 gap-1 w-full text-medium mt-8 mb-8'>
-															<h4 className='col-span-2'>Accesorios</h4>
-															{selectedAccessories.map((accessory, index) => {
-																return (
-																	<React.Fragment key={index}>
-																		<div>{accessory.name}</div>
-																		<div>
-																			{accessory.variants[0].prices[0].currency}{' '}
-																			{accessory.variants[0].prices[0].amount.toFixed(
-																				2
-																			)}
+													{selectedAccessories.length > 0 && (
+														<>
+															<h4 className='text-xl font-semibold mt-6'>
+																Accesorios Seleccionados:
+															</h4>
+															<div className='grid grid-cols-3 gap-1 w-full text-medium mt-8 mb-8'>
+																{selectedAccessories.map((accessory, index) => {
+																	return (
+																		<div
+																			key={index}
+																			className='col-start-1 col-end-3 flex justify-between'
+																		>
+																			<div>{accessory.name}</div>
+																			<div>
+																				{
+																					accessory.variants[0].prices[0]
+																						.currency
+																				}{' '}
+																				{accessory.variants[0].prices[0].amount.toFixed(
+																					2
+																				)}
+																			</div>
 																		</div>
-																	</React.Fragment>
-																);
-															})}
-														</div>
+																	);
+																})}
+																<div className='text-lg font-bold col-start-3 row-start-1 font-semibold text-right'>
+																	Total: {selectedAccessoriesSubtotal.toFixed(2)}
+																</div>
+															</div>
+														</>
 													)}
 												</>
 											)}
@@ -266,7 +281,9 @@ const ProductDetailPage = () => {
 												) : (
 													<button
 														onClick={undefined}
-														className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+														className={`rounded-full p-2 text-slate-50 text-center text-lg font-semibold w-60 cursor-pointer mt-4 ${
+															!!selectedVariantId ? 'bg-violet-500' : 'bg-gray-300'
+														}`}
 													>
 														Comprar
 													</button>
@@ -284,13 +301,13 @@ const ProductDetailPage = () => {
 													xmlns='http://www.w3.org/2000/svg'
 													fill='none'
 													viewBox='0 0 24 24'
-													stroke-width='1.5'
+													strokeWidth='1.5'
 													stroke='currentColor'
 													className='w-6 h-6'
 												>
 													<path
-														stroke-linecap='round'
-														stroke-linejoin='round'
+														strokeLinecap='round'
+														strokeLinejoin='round'
 														d='M15.75 19.5 8.25 12l7.5-7.5'
 													/>
 												</svg>
@@ -303,43 +320,11 @@ const ProductDetailPage = () => {
 							</React.Fragment>
 						)}
 					</>
-				) : (
-					<div>Loading...</div>
 				)}
 
-				{/* esto es para comprar accesorio desde detalle*/}
-				{selectedVariant && (
-					<div className='border border-slate-700 col-start-2 p-2'>
-						<h4 className='text-2xl font-semibold mb-4'>Detalle de cotizacion:</h4>
-						<div className='mb-4'>
-							{selectedVariant?.details.features.map((feature, index) => {
-								return (
-									<div key={index} className='text-gray-400 mb'>
-										{feature.value}
-									</div>
-								);
-							})}
-						</div>
-						<div className='grid grid-cols-2 gap-2'>
-							<div className=' text-lg font-semibold'>Precio {selectedVariant.name}</div>
-							<div>
-								{selectedVariant?.prices[0].currency}
-								{selectedVariant?.prices[0].amount.toFixed(2)}
-							</div>
-							<div className=' text-lg font-semibold'>Precio Accesorios</div>
-							<div>
-								{selectedVariant?.prices[0].currency}
-								{calculateReservationPrice(selectedVariant.prices[0].amount)}
-							</div>
-							<div className=' text-lg font-semibold'>Precio Reserva</div>
-							<div>
-								{selectedVariant?.prices[0].currency}
-								{calculateReservationPrice(selectedVariant.prices[0].amount)}
-							</div>
-						</div>
-					</div>
-				)}
+				{selectedVariant && <OrderDetails variant={selectedVariant} />}
 			</div>
+			{isLoading && <Loader />}
 		</Layout>
 	);
 };

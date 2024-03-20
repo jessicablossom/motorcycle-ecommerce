@@ -2,6 +2,7 @@ import React from 'react';
 import { ProductGridProps } from '../utils/types';
 import Layout from '../app/layout';
 import ProductCard from './ProductCard';
+import Loader from './common/Loader';
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
 	return (
@@ -14,7 +15,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
 
 			<Layout>
 				{isLoading ? (
-					<div>is loading...</div>
+					<Loader />
 				) : (
 					<>
 						<div className='flex flex-row relative gap-4 w-full h-fit top-10 m-2 pl-20 '>
