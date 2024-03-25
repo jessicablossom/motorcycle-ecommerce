@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useReservation } from '../contextAPI/reservationContext';
-import useApi from '../hooks/useApi';
+import useServices from '../hooks/useServices';
 import { useRouter } from 'next/router';
 
 const ContactForm = () => {
@@ -16,7 +16,7 @@ const ContactForm = () => {
 	});
 
 	const { addToReservation, reservation } = useReservation();
-	const { createLead } = useApi();
+	const { createLead } = useServices();
 	const router = useRouter();
 
 	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {

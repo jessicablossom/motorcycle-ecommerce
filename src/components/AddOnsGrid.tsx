@@ -14,21 +14,21 @@ const AddOnsGrid: React.FC<AddOnsGridProps> = ({ accessories, selectedIds, onSel
 	};
 
 	return (
-		<div className='grid grid-cols-5 gap-4 w-full mt-4'>
+		<div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 grid-rows-4 md:grid-rows-2 w-full mt-4'>
 			{accessories.map((accessory, index) => {
 				const isSelected = selectedIds.some((uuid) => uuid === accessory.uuid);
 				return (
 					<div
 						key={index}
 						onClick={() => handleAccessorySelection(accessory.uuid)}
-						className={`border p-2 rounded-lg shadow-md flex flex-col w-full h-32 items-center justify-between text-center cursor-pointer relative
+						className={`border p-2 rounded-lg shadow-md flex flex-col w-full h-full items-center justify-between text-center cursor-pointer relative
 						${isSelected ? 'border border-violet-500 font-semibold' : 'border hover:border-violet-500'}`}
 					>
-						<div className='text-xs max-width-5'>{accessory.name}</div>
+						<div className='text-md lg:text-sm xl:text-md '>{accessory.name}</div>
 						<img
 							src={accessory.variants[0].images[0].url}
 							alt={`Accessory Image ${index}`}
-							className='w-16 h-16 object-cover rounded-lg '
+							className='object-contain rounded-lg w-16 h-16'
 						/>
 						{isSelected && (
 							<div className='absolute bottom-1 right-1'>

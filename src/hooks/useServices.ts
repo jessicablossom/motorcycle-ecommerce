@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const useApi = () => {
+const useServices = () => {
 	const getAccessories = async () => {
 		try {
 			const response = await axios.get('/api/accessories');
@@ -24,6 +24,15 @@ const useApi = () => {
 		}
 	};
 
+	const getProductsbyType = async (productType: string) => {
+		try {
+			const response = await axios.get(`/api/${productType}`);
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching motorcycles:', error);
+		}
+	};
+
 	const createLead = async (lead: any) => {
 		try {
 			const response = await axios.post('/api/orders', lead);
@@ -33,7 +42,7 @@ const useApi = () => {
 		}
 	};
 
-	return { getAccessories, getMotorcycles, createLead };
+	return { getAccessories, getMotorcycles, getProductsbyType, createLead };
 };
 
-export default useApi;
+export default useServices;

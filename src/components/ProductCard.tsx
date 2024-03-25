@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ProductCardProps } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
 import { getColor } from '../utils/colors';
-import { getCategory } from '../utils/products';
+import { getCategory } from '../utils/categories';
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const { name, variants } = product;

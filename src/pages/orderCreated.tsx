@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../app/layout';
 import { useReservation } from '../contextAPI/reservationContext';
-import useApi from '../hooks/useApi';
+import useServices from '../hooks/useServices';
 import { Accessory } from '../utils/types';
 
 const OrderCreated = () => {
 	const { reservation, product } = useReservation();
-	const { getAccessories } = useApi();
+	const { getAccessories } = useServices();
 	const variant = product && product.variants.find((variant) => reservation?.uuid === variant.uuid);
 	const contact = reservation?.contact;
 	const accessoriesIds = reservation?.accessories || [];
@@ -22,12 +22,10 @@ const OrderCreated = () => {
 	}, []);
 	return (
 		<Layout>
-			{' '}
-			<div className='flex items-center gap-10 p-20 '>
-				<div className='border rounded-lg p-10 w-3/6 h-fit m-auto shadow-lg'>
+			<div className='flex items-center gap-10 p-10 p-10 sm:p-20 mt-10'>
+				<div className='border rounded-lg p-10 w-full sm:w-full lg:w-3/6 h-fit m-auto shadow-lg'>
 					<h4 className='text-2xl font-bold text-violet-600 mb-2'>¡Hemos recibido su solicitud!</h4>
 					<h4 className='text-lg font-normal text-gray-400'>
-						{' '}
 						Un distribuidor hará un seguimiento de los próximos pasos relacionados con su reserva.
 					</h4>
 					<div className='border border-b mt-4' />{' '}

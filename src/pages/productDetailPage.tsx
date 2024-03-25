@@ -4,7 +4,7 @@ import axios from 'axios';
 import Layout from '../app/layout';
 import { Product, Order, Accessory } from '../utils/types';
 import useFormattedPrice from '../hooks/useFormatterPrice';
-import useApi from '../hooks/useApi';
+import useServices from '../hooks/useServices';
 import { useReservation } from '../contextAPI/reservationContext';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -14,7 +14,7 @@ import Loader from '../components/common/Loader';
 
 const ProductDetailPage = () => {
 	const router = useRouter();
-	const { getAccessories } = useApi();
+	const { getAccessories } = useServices();
 	const { addToReservation, product, setProduct } = useReservation();
 
 	const { category, uuid } = router.query;
@@ -101,7 +101,7 @@ const ProductDetailPage = () => {
 			{isLoading ? (
 				<Loader />
 			) : (
-				<div className='grid grid-col-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:grid-col-2 gap-10 p-20'>
+				<div className='grid grid-col-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:grid-col-2 gap-10 p-5 lg:p-20'>
 					{product && product.variants.length > 0 && (
 						<React.Fragment key={product.uuid}>
 							<div className='h-full'>
@@ -116,7 +116,7 @@ const ProductDetailPage = () => {
 										swipeable={true}
 									>
 										{product.variants[0].images.map((image, index) => (
-											<div className='relative w-4/5' key={index}>
+											<div className='relative w-full' key={index}>
 												<img
 													src={image.url}
 													alt={`Image ${index}`}
@@ -130,7 +130,7 @@ const ProductDetailPage = () => {
 										<img
 											src={product.variants[0].images[0].url}
 											alt={`Image ${product.name}`}
-											className='w-full h-full object-contain'
+											className='w-full h-full object-contain border rounded-2xl shadow-md '
 										/>
 									</div>
 								)}

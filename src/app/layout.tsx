@@ -10,7 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => (
 	<>
 		<Navbar />
-		<div className='container mx-auto px-4 py-8'>{children}</div>
+		{children}
 		<Footer />
 	</>
 );

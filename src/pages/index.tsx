@@ -7,9 +7,9 @@ import Layout from '../app/layout';
 const Home = () => {
 	return (
 		<Layout>
-			<div className='flex flex-col items-center justify-center'>
+			<div className='top-0 w-full sm:m-auto flex flex-col '>
 				<div
-					className='w-full rounded-lg h-96 mt-20 bg-contain bg-center bg-no-repeat'
+					className='w-full rounded-lg h-96 mt-20 bg-cover md:bg-contain bg-center bg-no-repeat m-auto'
 					style={{
 						backgroundImage: 'url(/hero.jpeg)',
 					}}
@@ -21,18 +21,18 @@ const Home = () => {
 						integer pellentesque mauris. Sapien, duis commodo risus molestie pulvinar sit id id. Malesuada
 						quam leo, quis venenatis integer pellentesque mauris.
 					</p>
-					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-						<Link href='/motorcycles'>
-							<img src='/card-test.svg' className='border p-2 rounded-lg shadow-lg' />
+					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap:6 lg:pr-20 lg:pl-20 xl:pr-40 xl:pl-40 w-full'>
+						<Link className='' href='/motorcycles'>
+							<img src='/card-test.svg' className=' w-full h-full border p-2 rounded-lg shadow-lg' />
 						</Link>
 						<Link href='/motorcycles'>
-							<img src='/card-test.svg' className='border p-2 rounded-lg shadow-lg' />
+							<img src='/card-test.svg' className=' w-full h-full border p-2 rounded-lg shadow-lg' />
 						</Link>
 						<Link href='/motorcycles'>
-							<img src='/card-test.svg' className='border p-2 rounded-lg shadow-lg' />
+							<img src='/card-test.svg' className=' w-full h-full border p-2 rounded-lg shadow-lg' />
 						</Link>
 						<Link href='/motorcycles'>
-							<img src='/card-test.svg' className='border p-2 rounded-lg shadow-lg' />
+							<img src='/card-test.svg' className=' w-full h-full border p-2 rounded-lg shadow-lg' />
 						</Link>
 					</div>
 				</div>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import ProductGrid from '../components/ProductGrid';
-import useApi from '../hooks/useApi';
+import useServices from '../hooks/useServices';
 
-function Motos() {
+const Motorcycles = () => {
 	const [products, setProducts] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const { getMotorcycles } = useApi();
+	const { getMotorcycles } = useServices();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -17,6 +17,6 @@ function Motos() {
 	}, []);
 
 	return <ProductGrid isLoading={isLoading} products={products} />;
-}
+};
 
-export default Motos;
+export default Motorcycles;
