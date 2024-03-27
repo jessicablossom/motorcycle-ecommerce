@@ -126,7 +126,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
 								)}
 							</div>
 						</div>
-						<div className='flex min-h-screen w-screen w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center gap-8 justify-between p-10 lg:p-20 xl:pr-40 xl:pl-40'>
+						<div className='flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center gap-8 justify-between p-10 lg:p-20 xl:pr-40 xl:pl-40'>
 							{sortedProducts.map((item: any, index: number) => (
 								<ProductCard key={index} product={item} />
 							))}

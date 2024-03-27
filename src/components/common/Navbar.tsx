@@ -22,6 +22,7 @@ const Navbar = () => (
 				<NavItem href='/'>Home</NavItem>
 				<NavItem href='/motorcycles'>Motos</NavItem>
 				<NavItem href='/accessories'>Accesorios</NavItem>
+				<NavItem href='/clothing'>Indumentaria</NavItem>
 			</ul>
 		</div>
 		<div className='flex items-center'>

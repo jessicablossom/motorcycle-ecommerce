@@ -1,14 +1,21 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Footer = () => {
 	return (
-		<div className='h-full w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-4 text-white bg-purple-950'>
+		<div className=' relative h-full w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-4 text-white bg-purple-950'>
 			<div className='flex flex-col items-start text-left justify-around h-full w-full p-10'>
 				<img src='brand-white.svg' className='h-8 mb-2' />
 				<ul>
-					<li>Shop</li>
-					<li>Accesorios</li>
-					<li>Indumentaria</li>
+					<li>
+						<Link href='/motorcycles'>Motos</Link>
+					</li>
+					<li>
+						<Link href='/accessories'>Accesorios</Link>
+					</li>
+					<li>
+						<Link href='/clothing'>Indumentaria</Link>
+					</li>
 				</ul>
 			</div>
 			<div className='flex flex-col items-start justify-start h-full w-full p-10'>
@@ -33,18 +40,26 @@ const Footer = () => {
 			<div className='flex flex-col items-start justify-start h-full w-full p-10'>
 				<span className='text-lg font-bold mb-2'>Sobre nosotros</span>
 				<span className='text-md font-light mb-2'>Contactanos</span>
-				<ul className='flex w-fit gap-4'>
+				<ul className='flex w-fit gap-4 text-2xl '>
 					<li className='flex items-center'>
-						<i className='fab fa-facebook-square'></i>
+						<Link href='https://www.facebook.com/harley-davidson'>
+							<i className='fab fa-facebook-square hover:text-violet-500' />
+						</Link>
 					</li>
 					<li className='flex items-center'>
-						<i className='fab fa-instagram'></i>
+						<Link href='https://www.instagram.com/harleydavidson'>
+							<i className='fab fa-instagram hover:text-violet-500' />
+						</Link>
 					</li>
 					<li className='flex items-center'>
-						<i className='fab fa-twitter'></i>
+						<Link href='https://twitter.com/harleydavidson'>
+							<i className='fab fa-twitter hover:text-violet-500' />
+						</Link>
 					</li>
 					<li className='flex items-centers'>
-						<i className='fab fa-youtube'></i>
+						<Link href='https://www.youtube.com/harleydavidson'>
+							<i className='fab fa-youtube hover:text-violet-500' />
+						</Link>
 					</li>
 				</ul>
 			</div>
