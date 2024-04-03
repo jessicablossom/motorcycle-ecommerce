@@ -13,7 +13,7 @@ const NavItem = ({ href, children }: NavItemProps) => (
 const Navbar = () => (
 	<nav className='bg-white shadow-sm h-16 flex items-center justify-evenly px-4 sm:px-6 lg:px-8 fixed w-full top-0 right-0 z-40'>
 		<div className='flex items-center'>
-			<Link href='/'>
+			<Link href='https://simplimuv.com/'>
 				<img src='/brand-logo.svg' alt='Brand Logo' className='h-10' />
 			</Link>
 		</div>

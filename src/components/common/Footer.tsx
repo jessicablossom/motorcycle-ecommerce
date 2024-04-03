@@ -5,16 +5,24 @@ const Footer = () => {
 	return (
 		<div className=' relative h-full w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-4 text-white bg-purple-950'>
 			<div className='flex flex-col items-start text-left justify-around h-full w-full p-10'>
-				<img src='brand-white.svg' className='h-8 mb-2' />
+				<Link href='https://simplimuv.com/'>
+					<img src='brand-white.svg' className='h-8 mb-2' />
+				</Link>
 				<ul>
 					<li>
-						<Link href='/motorcycles'>Motos</Link>
+						<Link className='hover:text-violet-500' href='/motorcycles'>
+							Motos
+						</Link>
 					</li>
 					<li>
-						<Link href='/accessories'>Accesorios</Link>
+						<Link className='hover:text-violet-500' href='/accessories'>
+							Accesorios
+						</Link>
 					</li>
 					<li>
-						<Link href='/clothing'>Indumentaria</Link>
+						<Link className='hover:text-violet-500' href='/clothing'>
+							Indumentaria
+						</Link>
 					</li>
 				</ul>
 			</div>
